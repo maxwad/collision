@@ -89,7 +89,7 @@ public class Movement : MonoBehaviour
                 // newVector = (X, Y) - 2* (((X,Y)*(0, -1) * (0, -1)))
                 
                 Vector2 old = new Vector2(movementSpeedX, movementSpeedY);
-                Vector2 normal = new Vector2(0 , -1);
+                Vector2 normal = new Vector2(1 * (float)Math.Sin(groundAngle), -1 * (float)Math.Cos(groundAngle));
                 Vector2 newVector = old - 2 * (Vector2.Dot(old, normal) * normal);
                 movementSpeedY = newVector.y;
                 movementSpeedX = newVector.x;
