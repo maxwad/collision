@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     public float mass = 1;    
 
     // other Force and direction
-    private float force = 5f;
+    private float force = 3f;
     private float directionForceRad = 45 * (float)Math.PI / 180;
     private Vector2 acceleration;
     private Vector2 movementSpeed;
@@ -63,7 +63,7 @@ public class Movement : MonoBehaviour
     void FixedUpdate()
     {       
         // speed and distance (divide by 5 for fractionality)
-        movementSpeed   += acceleration * Time.deltaTime/5;
+        movementSpeed   += acceleration * Time.deltaTime;
         delta           = movementSpeed * Time.deltaTime;        
         player.position = (Vector2)player.position + delta;
 
