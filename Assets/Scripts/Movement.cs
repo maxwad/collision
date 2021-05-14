@@ -53,15 +53,6 @@ public class Movement : GlobalMovement
     }
 
 
-
-    // +++++++++++++++++++++++++
-    // +++++++++++++++++++++++++
-    
-
-    
-    // +++++++++++++++++++++++++
-    // +++++++++++++++++++++++++
-
     void Start()
     {
         Vector2 gravity = new Vector2(0, -10);
@@ -83,9 +74,7 @@ public class Movement : GlobalMovement
         {
             int ind = Array.IndexOf(balloons, item);
             if (item.name == player.name)
-            {
                 allBalls[ind] = new Ball(balloons[ind], acceleration, mass);
-            }
         }
     }
 
@@ -115,15 +104,6 @@ public class Movement : GlobalMovement
 
     void FixedUpdate()
     {
-        
-      
-
-        
-
-        // +++++++++++++++++++++++++
-        // +++++++++++++++++++++++++
-
-
         //DrawNormal();                     
 
         // check collision and change direction
@@ -134,12 +114,8 @@ public class Movement : GlobalMovement
             foreach (var item in allBalls)
             {
                 if (item.name == player.name)
-                {
                     item.movement -= 2 * (Vector2.Dot(movementSpeed, normal) * normal);
-                }
-
             }
-            //movementSpeed -= 2 * (Vector2.Dot(movementSpeed, normal) * normal); 
         }
     }
 }
