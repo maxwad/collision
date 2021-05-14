@@ -2,8 +2,9 @@
 using UnityEngine;
 
 
-public class Movement : MonoBehaviour
+public class Movement : GlobalMovement
 {
+
     public Transform player;
     public Transform ground;
 
@@ -12,7 +13,7 @@ public class Movement : MonoBehaviour
     // other Force and direction
     private float force = 3f;
     private float directionForceRad = 45 * (float)Math.PI / 180;
-    private Vector2 acceleration;
+    protected Vector2 acceleration;
     private Vector2 movementSpeed;
     private Vector2 delta;
     private Vector2 normal;
@@ -55,62 +56,15 @@ public class Movement : MonoBehaviour
 
     // +++++++++++++++++++++++++
     // +++++++++++++++++++++++++
-    public class Ball
-    {
-        public string name;
-        public Vector2 movement;
-        public Vector2 position;
-        public float mass;
-        public float radius;       
+    
 
-        public Ball(GameObject obj, Vector2 mov, float weigth)
-        {
-            name     = obj.name;
-            radius   = obj.transform.localScale.x / 2;
-            position = obj.transform.position;
-            movement = mov;
-            mass     = weigth;
-        }
-
-    }
-
-    public static Ball[] allBalls;
-
-    public static GameObject[] balloons;
-
-    private void CollisionOfBalloons()
-    {
-        Vector2 first, second;
-        for (int i = 0; i < allBalls.Length; i++)
-        {            
-            for (int j = i; j < allBalls.Length; j++)
-            {
-                if (i != j)
-                {
-                    if (Vector2.Distance(allBalls[i].position, allBalls[j].position) <= allBalls[i].radius + allBalls[j].radius)
-                    {
-                        //Debug.Log("allBalls[i].movement" + allBalls[i].movement);
-                        //Debug.Log("allBalls[j].movement" + allBalls[j].movement);                        
-                        first = (allBalls[j].mass * allBalls[j].movement) / allBalls[i].mass;
-                        second = (allBalls[i].mass * allBalls[i].movement) / allBalls[j].mass;
-                        allBalls[i].movement = first;
-                        allBalls[j].movement = second;                        
-                        //Debug.Log("!!!!!!  " + i + " --- " + j);
-                        //Debug.Log("allBalls[i].movement" + allBalls[i].movement);
-                        //Debug.Log("allBalls[j].movement" + allBalls[j].movement);
-                    }
-                }
-            }           
-        }
-    }
-
+    
     // +++++++++++++++++++++++++
     // +++++++++++++++++++++++++
 
     void Start()
     {
         Vector2 gravity = new Vector2(0, -10);
-
         groundAngle    = ground.transform.rotation.eulerAngles.z * (float)Math.PI / 180;
         cosGroundAngle = (float)Math.Cos(groundAngle);
         sinGroundAngle = (float)Math.Sin(groundAngle);
@@ -125,31 +79,17 @@ public class Movement : MonoBehaviour
             );
 
 
-        // +++++++++++++++++++++++++
-        // +++++++++++++++++++++++++
-
-        balloons = GameObject.FindGameObjectsWithTag("Player");
-        allBalls = new Ball[balloons.Length];
         foreach (var item in balloons)
         {
             int ind = Array.IndexOf(balloons, item);
-
-            allBalls[ind] = new Ball(balloons[ind], acceleration, mass);
             if (item.name == player.name)
             {
-                allBalls[ind].mass = mass;
+                allBalls[ind] = new Ball(balloons[ind], acceleration, mass);
             }
         }
-        for (int i = 0; i < allBalls.Length; i++)
-        {
-            Debug.Log("index = " + i + "; name  = " + allBalls[i].name  + "; mass  = " + allBalls[i].mass + " (player.name = " + player.name + ")");
-        }
-        // +++++++++++++++++++++++++
-        // +++++++++++++++++++++++++
     }
 
-
-    void FixedUpdate()
+    private void Update()
     {
         foreach (var item in allBalls)
         {
@@ -162,10 +102,6 @@ public class Movement : MonoBehaviour
         delta           = movementSpeed * Time.deltaTime;        
         player.position = (Vector2)player.position + delta;
 
-
-        // +++++++++++++++++++++++++
-        // +++++++++++++++++++++++++
-
         foreach (var item in allBalls)
         {
             if (item.name == player.name)
@@ -175,9 +111,14 @@ public class Movement : MonoBehaviour
             }
                                       
         }
+    }
+
+    void FixedUpdate()
+    {
+        
       
 
-        CollisionOfBalloons();
+        
 
         // +++++++++++++++++++++++++
         // +++++++++++++++++++++++++
